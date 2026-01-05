@@ -98,7 +98,6 @@ if st.button("クイズ開始"):
         st.session_state.questions = random.sample(filtered, num_questions)
         st.session_state.index = 0
         st.session_state.score = 0
-
 # ============================
 # 出題
 # ============================
@@ -109,27 +108,50 @@ if st.session_state.questions:
     st.subheader(f"問題 {idx + 1} / {num_questions}")
     st.markdown(f"### {jp}")
 
+    # 回答入力
     answer = st.text_input(
         "英単語を入力",
         key=f"ans_{idx}"
     )
 
-    if st.button("回答"):
-        if answer.strip().lower() == eng.lower():
-            st.success("◎ 正解！")
-            st.session_state.score += 1
-        else:
-            st.error(f"× 不正解：**{eng}**")
+    # 状態フラグ初期化
+    if "answered" not in st.session_state:
+        st.session_state.answered = False
+        st.session_state.last_correct = False
 
-        st.session_state.index += 1
+    # ============================
+    # 回答ボタン
+    # ============================
+    if not st.session_state.answered:
+        if st.button("回答"):
+            if answer.strip().lower() == eng.lower():
+                st.session_state.last_correct = True
+                st.session_state.score += 1
+            else:
+                st.session_state.last_correct = False
 
-        # 終了判定
-        if st.session_state.index >= num_questions:
-            st.balloons()
-            st.markdown(
-                f"## 🎉 結果：{st.session_state.score} / {num_questions} 正解"
-            )
-            st.session_state.questions = []
+            st.session_state.answered = True
+
+    # ============================
+    # 正誤・正解表示
+    # ============================
+    if st.session_state.answered:
+        if st.session_state.last_correct:
+            st.success(f"◎ 正解！ 正解は **{eng}**")
         else:
-            # ★ ここが重要：即次の問題へ
-            st.rerun()
+            st.error(f"× 不正解… 正解は **{eng}**")
+
+        # 次へ
+        if st.button("次の問題へ"):
+            st.session_state.index += 1
+            st.session_state.answered = False
+
+            if st.session_state.index >= num_questions:
+                st.balloons()
+                st.markdown(
+                    f"## 🎉 結果：{st.session_state.score} / {num_questions} 正解"
+                )
+                st.session_state.questions = []
+                st.session_state.answered = False
+            else:
+                st.rerun()
