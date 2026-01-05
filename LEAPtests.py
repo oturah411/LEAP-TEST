@@ -109,24 +109,18 @@ if st.session_state.questions:
     st.subheader(f"問題 {idx + 1} / {num_questions}")
     st.markdown(f"### {jp}")
 
-    # 回答入力
     answer = st.text_input(
         "英単語を入力",
         key=f"ans_{idx}"
     )
 
-    # 回答処理
     if st.button("回答"):
-        # ★ 今の問題を保持したまま判定
-        correct_eng = eng
-
-        if answer.strip().lower() == correct_eng.lower():
+        if answer.strip().lower() == eng.lower():
             st.success("◎ 正解！")
             st.session_state.score += 1
         else:
-            st.error(f"× 不正解：**{correct_eng}**")
+            st.error(f"× 不正解：**{eng}**")
 
-        # ★ 判定後に index を進める
         st.session_state.index += 1
 
         # 終了判定
@@ -136,3 +130,6 @@ if st.session_state.questions:
                 f"## 🎉 結果：{st.session_state.score} / {num_questions} 正解"
             )
             st.session_state.questions = []
+        else:
+            # ★ ここが重要：即次の問題へ
+            st.rerun()
