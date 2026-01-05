@@ -10,7 +10,7 @@ st.title("📘 日本語 → 英語クイズ（LEAP対応）")
 # ============================
 # GitHub上のCSV（raw URL）
 # ============================
-CSV_URL = "https://raw.githubusercontent.com/ユーザー名/リポジトリ名/main/LEAP_test.csv"
+CSV_URL = "https://raw.githubusercontent.com/oturah411/LEAP-TEST/refs/heads/main/LEAP%20test.csv"
 
 
 @st.cache_data
