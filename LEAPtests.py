@@ -48,15 +48,29 @@ except Exception as e:
 # ============================
 # 出題範囲
 # ============================
-min_no = min(w[0] for w in words)
-max_no = max(w[0] for w in words)
+st.subheader("出題範囲を指定")
 
-start_no, end_no = st.slider(
-    "出題範囲を選択",
-    min_value=min_no,
-    max_value=max_no,
-    value=(min_no, max_no)
-)
+col1, col2 = st.columns(2)
+
+with col1:
+    start_no = st.number_input(
+        "開始番号",
+        min_value=1,
+        value=1,
+        step=1
+    )
+
+with col2:
+    end_no = st.number_input(
+        "終了番号",
+        min_value=1,
+        value=max(w[0] for w in words),
+        step=1
+    )
+
+if start_no > end_no:
+    st.error("開始番号は終了番号以下にしてください")
+    st.stop()
 
 filtered = [w for w in words if start_no <= w[0] <= end_no]
 st.write(f"出題候補：{len(filtered)}語")
