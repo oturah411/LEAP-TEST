@@ -87,8 +87,8 @@ preset = st.radio(
 )
 
 custom_num = st.number_input(
-    "自由に指定（未入力ならプリセットが使われます）",
-    min_value=1,
+    "自由に指定（0ならプリセットが使われます）",
+    min_value=0,
     step=1,
     placeholder="例：20, 50, 100"
 )
