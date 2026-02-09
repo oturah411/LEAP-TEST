@@ -76,9 +76,25 @@ filtered = [w for w in words if start_no <= w[0] <= end_no]
 st.write(f"出題候補：{len(filtered)}語")
 
 # ============================
-# 問題数
+# 問題数選択
 # ============================
-num_questions = st.radio("問題数を選択", [3, 5, 10], horizontal=True)
+st.subheader("問題数を選択")
+
+preset = st.radio(
+    "プリセット",
+    [3, 5, 10],
+    horizontal=True
+)
+
+custom_num = st.number_input(
+    "自由に指定（未入力ならプリセットが使われます）",
+    min_value=1,
+    step=1,
+    placeholder="例：20, 50, 100"
+)
+
+# 優先順位：自由入力 > プリセット
+num_questions = custom_num if custom_num > 0 else preset
 
 # ============================
 # セッション初期化
